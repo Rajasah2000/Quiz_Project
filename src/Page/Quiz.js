@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import '../Page/Quiz.css'
 import toast from 'react-hot-toast';
+import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 const Quiz = () => {
   const [count , setCount] = useState(1);
@@ -363,7 +365,23 @@ const HandleClick = (item , ele , index) => {
           {count === AllQuestion?.length && (
             <button
               class="option2"
-              onClick={() => toast.success('Submit Successfully')}
+              onClick={() => Swal.fire({
+  title: "Are you sure?",
+  text: "You won't be able to revert this!",
+  icon: "success",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, delete it!"
+}).then((result) => {
+  if (result.isConfirmed) {
+    Swal.fire({
+      title: "Deleted!",
+      text: "Your file has been deleted.",
+      icon: "success"
+    });
+  }
+})}
               style={{ float: 'left' }}
             >
               Save & Finish
