@@ -244,8 +244,6 @@ const Quiz = () => {
     },
   ]);
 
-  // console.log('fsdfsdfsdfsdf', AllQuestion);
-
   const HandleClick = (item, ele, index) => {
     setOptionIndex(index);
     setToggle(true);
@@ -269,7 +267,7 @@ const Quiz = () => {
   };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: isConfirmed ? '2rem' : '5rem' }}>
+    <div style={{ textAlign: 'center', marginTop: isConfirmed ? '2rem' : '0rem' }}>
       <div className="header">
         {isConfirmed ? (
           <h2>Review</h2>
@@ -284,7 +282,7 @@ const Quiz = () => {
         style={{
           overflowY: isConfirmed ? 'scroll' : 'none',
           height: isConfirmed ? '35rem' : 'none',
-          margin: isConfirmed ? '0px 17rem' : 'none',
+          // margin: isConfirmed ? '0px 17rem' : 'none',
           textAlign: isConfirmed ? 'center' : 'none',
         }}
       >
@@ -421,7 +419,7 @@ const Quiz = () => {
                       title:
                         score >= 0 && score <= 3 ? 'Poor Job' : score >= 4 && score <= 7 ? 'Good Job' : 'Excellent Job',
                       text: `Your Score ${score} out of 10!`,
-                      icon: 'success',
+                      icon: score >= 0 && score <= 5 ? 'error' :  'success',
                       showCancelButton: true,
                       confirmButtonColor: '#3085d6',
                       cancelButtonColor: '#d33',
