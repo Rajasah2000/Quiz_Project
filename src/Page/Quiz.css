@@ -126,6 +126,15 @@ h2 {
       
     
       }
+      /* Before */
+.example {
+    background: url('/images/example.jpg');
+  }
+  
+  /* After */
+  .example {
+    background: url('\/images\/example.jpg');
+  }
 
       .circle-container {
         display: flex;
