@@ -86,7 +86,7 @@ h2 {
         width: 80%;
         overflow: hidden;
         padding: 1% 2%;
-      } */
+      } 
       
       /* ... your existing styles ... */
       
@@ -126,15 +126,6 @@ h2 {
       
     
       }
-      /* Before */
-.example {
-    background: url('/images/example.jpg');
-  }
-  
-  /* After */
-  .example {
-    background: url('\/images\/example.jpg');
-  }
 
       .circle-container {
         display: flex;
