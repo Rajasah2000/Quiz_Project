@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
-import '../Page/Quiz.css'
+import React, { useState } from 'react';
+import '../Page/Quiz.css';
 import toast from 'react-hot-toast';
-import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 
+
 const Quiz = () => {
-  const [count , setCount] = useState(1);
-  const [score , setScore] = useState(0);
-  const [select , setSelect] = useState(false);
-  const [toggle , setToggle] = useState(false);
-  const [optionIndex , setOptionIndex] = useState(null)
+  const [count, setCount] = useState(1);
+  const [score, setScore] = useState(0);
+  const [select, setSelect] = useState(false);
+  const [toggle, setToggle] = useState(false);
+  const [isConfirmed, setConfirmed] = useState(false);
+  const [optionIndex, setOptionIndex] = useState(null);
   const [AllQuestion, setAllQuestion] = useState([
     {
       question: 'React is a library for building user interfaces in which programming language?',
@@ -243,163 +244,215 @@ const Quiz = () => {
     },
   ]);
 
+  // console.log('fsdfsdfsdfsdf', AllQuestion);
 
+  const HandleClick = (item, ele, index) => {
+    setOptionIndex(index);
+    setToggle(true);
 
-console.log('fsdfsdfsdfsdf', AllQuestion);
-
-
-
-
-const HandleClick = (item , ele , index) => {
-  setOptionIndex(index)
-  setToggle(true)
-  
-  setAllQuestion(prev => {
-    const newArray = [...prev];
-    newArray[count - 1] = {
-      ...newArray[count - 1],
-      options: ele?.options,
-      question: ele?.question,
-      status: true,
-      userSideAnswer: item?.name,
-    }; 
-    return newArray
-  })
-  setSelect(true);
-  //  AllQuestion[count - 1].status = true;
-  if(item?.correct == true){
-    setScore(score+1);
-  }
-}
+    setAllQuestion(prev => {
+      const newArray = [...prev];
+      newArray[count - 1] = {
+        ...newArray[count - 1],
+        options: ele?.options,
+        question: ele?.question,
+        status: true,
+        userSideAnswer: item?.name,
+      };
+      return newArray;
+    });
+    setSelect(true);
+    //  AllQuestion[count - 1].status = true;
+    if (item?.correct == true) {
+      setScore(score + 1);
+    }
+  };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '5rem' }}>
+    <div style={{ textAlign: 'center', marginTop: isConfirmed ? '2rem' : '5rem' }}>
       <div className="header">
-        <h2 className="header_heading">React Quiz Website</h2>
-        <p>A simple quiz website coded in react js</p>
-      </div>
-      <div className="header1">
-        <p style={{ float: 'left' }}>
-          Question {count} out of {AllQuestion?.length}
-        </p>
-        <p style={{ float: 'right' }}>Score: 0</p>
+        {isConfirmed ? (
+          <h2>Review</h2>
+        ) : (
+          <>
+            <h2 className="header_heading">React Quiz Website</h2>
+            <p>A simple quiz website coded in react js</p>
+          </>
+        )}
       </div>
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'center',
+          overflowY: isConfirmed ? 'scroll' : 'none',
+          height: isConfirmed ? '35rem' : 'none',
+          margin: isConfirmed ? '0px 17rem' : 'none',
+          textAlign: isConfirmed ? 'center' : 'none',
         }}
       >
-        {AllQuestion?.map((ele, index) => {
-          return (
-            <div
-              className="circle"
-              style={{ backgroundColor: ele?.status ? '#45a049' : '#f5424e' }}
-              onClick={() => setCount(index + 1)}
-            >
-              {index + 1}
-            </div>
-          );
-        })}
-      </div>
+        {!isConfirmed && (
+          <div className="header1">
+            <p style={{ float: 'left' }}>
+              Question {count} out of {AllQuestion?.length}
+            </p>
+            <p style={{ float: 'right' }}>Score: 0</p>
+          </div>
+        )}
 
-      {AllQuestion.slice(count - 1, count)?.map((ele, inx) => {
-        return (
-          <div class="quiz-container">
-            <div class="question">
-              <h2>Question {count}:</h2>
-              <p>{ele?.question}</p>
-            </div>
-            <div class="answers">
-              {ele?.options?.map((item, index) => {
-                return (
-                  <button
-                    class="option"
-                    style={{ backgroundColor: toggle && index === optionIndex || item.name == ele?.userSideAnswer  ? '#e3d405' : '#4caf50' }}
-                    onClick={() => HandleClick(item, ele, index)}
-                  >
-                    {String.fromCharCode(65 + index)}. {item?.name}
-                  </button>
-                );
-              })}
+        {!isConfirmed && (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            {AllQuestion?.map((ele, index) => {
+              return (
+                <div
+                  className="circle"
+                  style={{ backgroundColor: ele?.status ? '#45a049' : '#f5424e', cursor: 'pointer' }}
+                  onClick={() => setCount(index + 1)}
+                >
+                  {index + 1}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {isConfirmed
+          ? AllQuestion?.map((ele, inx) => {
+              return (
+                <div class="quiz-container1">
+                  <div class="question">
+                    <h2>Question {inx + 1}:</h2>
+                    <p>{ele?.question}</p>
+                  </div>
+                  <div class="answers">
+                    {ele?.options?.map((item, index) => {
+                      return (
+                        <button
+                          class="option"
+                          style={{
+                            backgroundColor:
+                              (ele?.userSideAnswer == item?.name && item?.correct) || item?.correct
+                                ? '#45a049'
+                                : ele?.userSideAnswer == item?.name
+                                ? '#f5424e'
+                                : 'grey',
+                          }}
+                        >
+                          {String.fromCharCode(65 + index)}. {item?.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })
+          : AllQuestion.slice(count - 1, count)?.map((ele, inx) => {
+              return (
+                <div class="quiz-container">
+                  <div class="question">
+                    <h2>Question {count}:</h2>
+                    <p>{ele?.question}</p>
+                  </div>
+                  <div class="answers">
+                    {ele?.options?.map((item, index) => {
+                      return (
+                        <button
+                          class="option"
+                          style={{
+                            backgroundColor:
+                              (toggle && index === optionIndex) || item.name == ele?.userSideAnswer
+                                ? '#e3d405'
+                                : '#4caf50',
+                          }}
+                          onClick={() => HandleClick(item, ele, index)}
+                        >
+                          {String.fromCharCode(65 + index)}. {item?.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+
+        {!isConfirmed && (
+          <div className="header1">
+            <div class="">
+              {count !== AllQuestion?.length && (
+                <button
+                  disabled={count == AllQuestion?.length ? true : false}
+                  class="option"
+                  style={{ float: 'left' }}
+                  onClick={() => {
+                    if (select) {
+                      toast.success('Saved Successfully');
+                      // console.log('uiuiuiuiuiuiiu', AllQuestion);
+                      setToggle(false);
+                      setCount(count + 1);
+                      setSelect(false);
+                    } else {
+                      toast.error('Please select option');
+                    }
+                  }}
+                >
+                  Save & Continue
+                </button>
+              )}
+              {count !== AllQuestion?.length && (
+                <button
+                  disabled={count == AllQuestion?.length ? true : false}
+                  class="option1"
+                  onClick={() => {
+                    setCount(count + 1);
+                    setSelect(false);
+                  }}
+                >
+                  Skip
+                </button>
+              )}
+
+              {count === AllQuestion?.length && (
+                <button
+                  class="option2"
+                  onClick={() =>
+                    Swal.fire({
+                      title:
+                        score >= 0 && score <= 3 ? 'Poor Job' : score >= 4 && score <= 7 ? 'Good Job' : 'Excellent Job',
+                      text: `Your Score ${score} out of 10!`,
+                      icon: 'success',
+                      showCancelButton: true,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Review',
+                    }).then(result => {
+                      if (result.isConfirmed) {
+                        setConfirmed(true);
+                      } else {
+                        window.location.reload();
+                      }
+                    })
+                  }
+                  style={{ float: 'left' }}
+                >
+                  Save & Finish
+                </button>
+              )}
+              <button
+                disabled={count == 1 ? true : false}
+                class="option2"
+                onClick={() => setCount(count - 1)}
+                style={{ float: 'right' }}
+              >
+                Previous
+              </button>
             </div>
           </div>
-        );
-      })}
-
-      <div className="header1">
-        <div class=""> 
-          {count !== AllQuestion?.length && (
-            <button
-              disabled={count == AllQuestion?.length ? true : false}
-              class="option"
-              style={{ float: 'left' }}
-              onClick={() => {
-                if (select) {
-                  toast.success('Saved Successfully');
-                  console.log('uiuiuiuiuiuiiu', AllQuestion);
-                  setToggle(false)
-                  setCount(count + 1);
-                  setSelect(false);
-                } else {
-                  toast.error('Please select option');
-                }
-              }}
-            >
-              Save & Continue
-            </button>
-          )}
-          {count !== AllQuestion?.length && (
-            <button
-              disabled={count == AllQuestion?.length ? true : false}
-              class="option1"
-              onClick={() => {
-                setCount(count + 1);
-                setSelect(false);
-              }}
-            >
-              Skip
-            </button>
-          )}
-
-          {count === AllQuestion?.length && (
-            <button
-              class="option2"
-              onClick={() => Swal.fire({
-  title: "Are you sure?",
-  text: "You won't be able to revert this!",
-  icon: "success",
-  showCancelButton: true,
-  confirmButtonColor: "#3085d6",
-  cancelButtonColor: "#d33",
-  confirmButtonText: "Yes, delete it!"
-}).then((result) => {
-  if (result.isConfirmed) {
-    Swal.fire({
-      title: "Deleted!",
-      text: "Your file has been deleted.",
-      icon: "success"
-    });
-  }
-})}
-              style={{ float: 'left' }}
-            >
-              Save & Finish
-            </button>
-          )}
-          <button
-            disabled={count == 1 ? true : false}
-            class="option2"
-            onClick={() => setCount(count - 1)}
-            style={{ float: 'right' }}
-          >
-            Previous
-          </button>
-        </div>
+        )}
       </div>
-
     </div>
   );
-}
+};
 
-export default Quiz
+export default Quiz;
