@@ -48,14 +48,14 @@ const Quiz = () => {
           name: 'To handle HTTP requests',
           correct: false,
         },
-        {
-          name: 'To describe the UI',
-          correct: true,
-        },
-        {
-          name: 'To declare variables',
-          correct: false,
-        },
+        // {
+        //   name: 'To describe the UI',
+        //   correct: true,
+        // },
+        // {
+        //   name: 'To declare variables',
+        //   correct: false,
+        // },
       ],
     },
     {
