@@ -25,14 +25,14 @@ const Quiz = () => {
           name: 'Java',
           correct: false,
         },
-        {
-          name: 'Python',
-          correct: false,
-        },
-        {
-          name: 'C++',
-          correct: false,
-        },
+        // {
+        //   name: 'Python',
+        //   correct: false,
+        // },
+        // {
+        //   name: 'C++',
+        //   correct: false,
+        // },
       ],
     },
     {
